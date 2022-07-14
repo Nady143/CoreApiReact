@@ -1,4 +1,5 @@
 using Core.DataLayer.Context;
+using Core.ServiceLayer;
 using Core.UI.PresentationLayer.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -39,6 +40,7 @@ namespace Core.UI.PresentationLayer
             services.AddDbContext<UniversityDBContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("UniversityDBConnection")));
+            RegisterDependency(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -70,6 +72,11 @@ namespace Core.UI.PresentationLayer
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });
+        }
+
+        private static void RegisterDependency(IServiceCollection services)
+        {
+            DependencyContainer.RegisterServices(services);
         }
     }
 }
